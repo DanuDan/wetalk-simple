@@ -37,14 +37,9 @@ func (h *handlerProfile) FindProfiles(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(err.Error())
 	}
 
-	// for i, p := range profiles {
-	// 	var path_file = os.Getenv("PATH_FILE") + p.Image
-	// 	profiles[i].Image = path_file
-	// }
-	var path_file = "http://localhost:5000/"
-
 	for i, p := range profiles {
-		profiles[i].Image = path_file + p.Image
+		var path_file = os.Getenv("PATH_FILE") + p.Image
+		profiles[i].Image = path_file
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -64,13 +59,9 @@ func (h *handlerProfile) FindProfile(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(err.Error())
 	}
 
-	// for i, p := range profiles {
-	// 	var path_file = os.Getenv("PATH_FILE") + p.Image
-	// 	profiles[i].Image = path_file
-	// }
-	var path_file = "http://localhost:5000/"
 	for i, p := range profile {
-		profile[i].Image = path_file + p.Image
+		var path_file = os.Getenv("PATH_FILE") + p.Image
+		profile[i].Image = path_file
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -91,9 +82,7 @@ func (h *handlerProfile) GetProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// profile.Image = os.Getenv("PATH_FILE") + profile.Image|
-	var path_file = "http://localhost:5000/"
-	profile.Image = path_file + profile.Image
+	profile.Image = os.Getenv("PATH_FILE") + profile.Image
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Status: "Success", Data: convertResponseProfile(profile)}
