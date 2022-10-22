@@ -166,10 +166,26 @@ func (h *handlerProfile) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Declare Context Background, Cloud Name, API Key, API Secret ...
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
+
+	// Add your Cloudinary credentials ...
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	// Upload file to Cloudinary ...
+	resp, err := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "wetalk"})
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
 	profile, _ := h.ProfileRepository.GetProfile(id)
 
 	if filepath != "false" {
-		profile.Image = filepath
+		profile.Image = resp.SecureURL
 	}
 
 	profile, err = h.ProfileRepository.UpdateProfile(profile)
